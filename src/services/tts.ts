@@ -1,40 +1,21 @@
-import { GoogleGenAI, Modality } from "@google/genai";
-
 export async function generateTTS(text: string, language: 'uz' | 'en' | 'ru' = 'uz'): Promise<string | null> {
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    
-    let promptText = text;
-    if (language === 'uz') {
-      promptText = `O'zbek tilida o'qing: ${text}`;
-    } else if (language === 'ru') {
-      promptText = `Прочитайте на русском: ${text}`;
-    } else if (language === 'en') {
-      promptText = `Read in English: ${text}`;
-    }
-
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-preview-tts",
-      contents: [{ parts: [{ text: promptText }] }],
-      config: {
-        responseModalities: [Modality.AUDIO],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: "Kore" },
-          },
-        },
-      },
+    const response = await fetch('/api/generate-tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, language }),
     });
 
-    const base64Audio =
-      response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-    if (base64Audio) {
-      return base64Audio;
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("TTS API error:", error);
+      return null;
     }
-    return null;
+
+    const data = await response.json();
+    return data.audio || null;
   } catch (error: any) {
     console.error("TTS generation failed:", error);
-    alert("TTS API Error: " + (error?.message || String(error)));
     return null;
   }
 }

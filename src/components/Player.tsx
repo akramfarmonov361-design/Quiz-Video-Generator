@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, Maximize2, RotateCcw } from "lucide-react";
 import { playPCMAsync, stopPCM } from "../services/tts";
 import { playPop, playTick, playSuccess } from "../services/sfx";
+import { t } from "../i18n";
 
 interface PlayerProps {
   quiz: Quiz;
@@ -129,32 +130,7 @@ export function Player({ quiz, onExit }: PlayerProps) {
     }
   };
 
-  const getTranslation = (key: string) => {
-    const lang = quiz.language || 'uz';
-    const dict: Record<string, Record<string, string>> = {
-      completed: {
-        uz: "Test yakunlandi!",
-        en: "Quiz completed!",
-        ru: "Тест завершен!"
-      },
-      allShown: {
-        uz: "Barcha savollar namoyish etildi.",
-        en: "All questions have been shown.",
-        ru: "Все вопросы были показаны."
-      },
-      restart: {
-        uz: "Qayta boshlash",
-        en: "Restart",
-        ru: "Начать заново"
-      },
-      back: {
-        uz: "Tahrirlashga qaytish",
-        en: "Back to editor",
-        ru: "Вернуться к редактированию"
-      }
-    };
-    return dict[key][lang] || dict[key]['uz'];
-  };
+  const lang = quiz.language || 'uz';
 
   if (currentQuestionIndex >= quiz.questions.length) {
     return (
@@ -167,22 +143,22 @@ export function Player({ quiz, onExit }: PlayerProps) {
           <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <RotateCcw size={40} className="text-emerald-500" />
           </div>
-          <h2 className="text-3xl font-bold mb-2">{getTranslation('completed')}</h2>
+          <h2 className="text-3xl font-bold mb-2">{t('completed')}</h2>
           <p className="text-neutral-400 mb-8">
-            {getTranslation('allShown')}
+            {t('allShown')}
           </p>
           <div className="flex flex-col gap-3">
             <button
               onClick={() => setCurrentQuestionIndex(0)}
               className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-4 rounded-xl font-semibold transition-colors"
             >
-              <RotateCcw size={20} /> {getTranslation('restart')}
+              <RotateCcw size={20} /> {t('restart')}
             </button>
             <button
               onClick={onExit}
               className="w-full flex items-center justify-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white px-6 py-4 rounded-xl font-semibold transition-colors"
             >
-              <X size={20} /> {getTranslation('back')}
+              <X size={20} /> {t('back')}
             </button>
           </div>
         </motion.div>
