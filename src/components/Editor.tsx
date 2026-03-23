@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { Quiz, Question } from "../types";
 import {
   Plus,
@@ -13,6 +13,8 @@ import {
   MonitorPlay,
   ChevronDown,
   ChevronUp,
+  FileJson,
+  Upload,
 } from "lucide-react";
 import { generateTTS } from "../services/tts";
 import { generateQuizAI } from "../services/ai";
@@ -147,6 +149,59 @@ export function Editor({ quiz, setQuiz, onPlay }: EditorProps) {
     }
   };
 
+  const handleDownloadTemplate = () => {
+    const template: Quiz = {
+      title: "My Custom Quiz",
+      aspectRatio: "9:16",
+      bgmUrl: "",
+      timerDuration: 5,
+      language: "uz",
+      questions: [
+        {
+          id: "1",
+          text: "Sample Question?",
+          options: ["Option A", "Option B", "Option C"],
+          correctOptionIndex: 0,
+          backgroundImage: "https://images.unsplash.com/photo-1541359927273-d76820fc43f9?q=80&w=1000&auto=format&fit=crop",
+          questionImage: ""
+        }
+      ]
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(template, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "quiz_template.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
+  const handleImportJSON = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const json = JSON.parse(event.target?.result as string);
+        if (json && json.questions && Array.isArray(json.questions)) {
+          // Ensure all questions have an ID
+          const processedQuestions = json.questions.map((q: any) => ({
+            ...q,
+            id: q.id || Math.random().toString(36).substring(7)
+          }));
+          setQuiz({ ...json, questions: processedQuestions });
+        } else {
+          alert("Invalid JSON format. Please use the provided template.");
+        }
+      } catch (err) {
+        alert("Error parsing JSON file.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
   const getTranslation = (key: string) => {
     const lang = quiz.language || 'uz';
     const dict: Record<string, Record<string, string>> = {
@@ -279,6 +334,16 @@ export function Editor({ quiz, setQuiz, onPlay }: EditorProps) {
         uz: "TikTok, Instagram Reels va YouTube Shorts uchun",
         en: "For TikTok, Instagram Reels and YouTube Shorts",
         ru: "Для TikTok, Instagram Reels и YouTube Shorts"
+      },
+      downloadTemplate: {
+        uz: "Shablonni yuklab olish (.json)",
+        en: "Download template (.json)",
+        ru: "Скачать шаблон (.json)"
+      },
+      importJson: {
+        uz: "JSON yuklash",
+        en: "Import JSON",
+        ru: "Загрузить JSON"
       }
     };
     return dict[key][lang] || dict[key]['uz'];
@@ -303,13 +368,29 @@ export function Editor({ quiz, setQuiz, onPlay }: EditorProps) {
         </div>
       )}
 
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
-          {getTranslation('titleHeader')}
-        </h1>
-        <p className="text-neutral-400 mt-2">
-          {getTranslation('titleSub')}
-        </p>
+      <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400">
+            {getTranslation('titleHeader')}
+          </h1>
+          <p className="text-neutral-400 mt-2">
+            {getTranslation('titleSub')}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={handleDownloadTemplate}
+            className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-xl font-medium transition-colors text-sm"
+          >
+            <FileJson size={16} />
+            {getTranslation('downloadTemplate')}
+          </button>
+          <label className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-xl font-medium transition-colors text-sm cursor-pointer">
+            <Upload size={16} />
+            {getTranslation('importJson')}
+            <input type="file" accept=".json" className="hidden" onChange={handleImportJSON} />
+          </label>
+        </div>
       </div>
 
       <div className="flex justify-between items-end mb-8">
