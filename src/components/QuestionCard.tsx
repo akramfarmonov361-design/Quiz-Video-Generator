@@ -37,16 +37,16 @@ export function QuestionCard({
     <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 shadow-xl transition-all">
       <div className="flex justify-between items-center mb-2">
         <div 
-          className="flex items-center gap-3 cursor-pointer flex-1"
+          className="flex items-start sm:items-center gap-3 cursor-pointer flex-1"
           onClick={onToggleExpand}
         >
-          <div className="bg-neutral-800 text-neutral-400 w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0">
+          <div className="bg-neutral-800 text-neutral-400 w-8 h-8 rounded-full flex items-center justify-center font-bold shrink-0 mt-1 sm:mt-0">
             {qIndex + 1}
           </div>
-          <h3 className="text-xl font-semibold truncate max-w-md">
+          <h3 className="text-lg sm:text-xl font-semibold flex-1 sm:truncate max-w-none sm:max-w-md">
             {q.text || t('question', lang)}
           </h3>
-          <div className="text-neutral-500 hover:text-white transition-colors p-1">
+          <div className="text-neutral-500 hover:text-white transition-colors p-1 shrink-0 mt-1 sm:mt-0">
             {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
           </div>
         </div>
@@ -113,8 +113,8 @@ export function QuestionCard({
           <label className="block text-sm font-medium text-neutral-400 mb-2">
             {t('bgImage', lang)}
           </label>
-          <div className="flex gap-4 items-start">
-            <div className="relative flex-1">
+          <div className="flex flex-col sm:flex-row gap-4 items-start">
+            <div className="relative w-full sm:flex-1">
               <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" size={18} />
               <input
                 type="text"
@@ -125,7 +125,7 @@ export function QuestionCard({
               />
             </div>
             {q.backgroundImage && (
-              <div className="w-24 h-16 rounded-lg overflow-hidden shrink-0 border border-neutral-800">
+              <div className="w-full sm:w-24 h-32 sm:h-16 rounded-lg overflow-hidden shrink-0 border border-neutral-800">
                 {q.backgroundImage.match(/\.(mp4|webm|ogg)$/i) ? (
                   <video src={q.backgroundImage} className="w-full h-full object-cover" muted loop autoPlay playsInline />
                 ) : (
@@ -140,8 +140,8 @@ export function QuestionCard({
           <label className="block text-sm font-medium text-neutral-400 mb-2">
             {t('qImage', lang)}
           </label>
-          <div className="flex gap-4 items-start">
-            <div className="relative flex-1">
+          <div className="flex flex-col sm:flex-row gap-4 items-start">
+            <div className="relative w-full sm:flex-1">
               <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" size={18} />
               <input
                 type="text"
@@ -152,7 +152,7 @@ export function QuestionCard({
               />
             </div>
             {q.questionImage && (
-              <div className="w-24 h-16 rounded-lg overflow-hidden shrink-0 border border-neutral-800 bg-neutral-900 flex items-center justify-center">
+              <div className="w-full sm:w-24 h-32 sm:h-16 rounded-lg overflow-hidden shrink-0 border border-neutral-800 bg-neutral-900 flex items-center justify-center">
                 {q.questionImage.match(/\.(mp4|webm|ogg)$/i) ? (
                   <video src={q.questionImage} className="max-w-full max-h-full object-contain" muted loop autoPlay playsInline />
                 ) : (

@@ -193,11 +193,10 @@ export function Player({ quiz, onExit }: PlayerProps) {
         </button>
       </div>
 
-      {/* 9:16 or 16:9 Video Container */}
       <div
         ref={containerRef}
-        className={`relative w-full bg-neutral-900 rounded-[2.5rem] overflow-hidden shadow-2xl ring-1 ring-white/10 ${
-          quiz.aspectRatio === '16:9' ? 'max-w-5xl aspect-video' : 'max-w-[420px] aspect-[9/16]'
+        className={`relative w-full bg-neutral-900 sm:rounded-[2.5rem] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10 ${
+          quiz.aspectRatio === '16:9' ? 'max-w-5xl w-full h-auto aspect-video' : 'max-w-[420px] w-full max-h-[85vh] h-auto aspect-[9/16] mt-8 sm:mt-0'
         }`}
       >
         {/* Background */}
@@ -262,7 +261,7 @@ export function Player({ quiz, onExit }: PlayerProps) {
           </div>
 
           {/* Question Box (Top, Full Width) */}
-          <div className={`w-full flex justify-center ${quiz.aspectRatio === '16:9' ? 'mt-4 mb-8 px-24' : 'mt-16 mb-6 px-4'}`}>
+          <div className={`w-full flex justify-center ${quiz.aspectRatio === '16:9' ? 'mt-4 mb-8 px-4 sm:px-12 md:px-24' : 'mt-16 mb-6 px-4'}`}>
             <AnimatePresence>
               {(phase === "question" ||
                 phase === "options" ||
@@ -276,7 +275,7 @@ export function Player({ quiz, onExit }: PlayerProps) {
                   className="w-full text-center"
                 >
                   <h2 
-                    className={`${quiz.aspectRatio === '16:9' ? 'text-4xl sm:text-5xl' : 'text-3xl sm:text-4xl'} font-black text-white leading-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]`}
+                    className={`${quiz.aspectRatio === '16:9' ? 'text-2xl sm:text-4xl md:text-5xl' : 'text-2xl sm:text-3xl lg:text-4xl'} font-black text-white leading-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]`}
                     style={{ WebkitTextStroke: '1px rgba(0,0,0,0.5)' }}
                   >
                     {question.text}
@@ -287,7 +286,7 @@ export function Player({ quiz, onExit }: PlayerProps) {
           </div>
 
           {/* Content Area (Image + Options) */}
-          <div className={`flex-1 flex ${quiz.aspectRatio === '16:9' ? 'flex-row items-center justify-center gap-12 px-12' : 'flex-col items-center justify-start gap-6'}`}>
+          <div className={`flex-1 flex ${quiz.aspectRatio === '16:9' ? 'flex-col md:flex-row items-center justify-center gap-6 md:gap-12 px-4 sm:px-12' : 'flex-col items-center justify-start gap-4 sm:gap-6'}`}>
             
             {/* Side Image */}
             <AnimatePresence>
@@ -297,7 +296,7 @@ export function Player({ quiz, onExit }: PlayerProps) {
                   animate={{ opacity: 1, scale: 1, x: 0 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className={`${quiz.aspectRatio === '16:9' ? 'w-1/2 flex justify-end' : 'w-full max-w-xs'} `}
+                  className={`${quiz.aspectRatio === '16:9' ? 'w-full md:w-1/2 flex justify-center md:justify-end' : 'w-full max-w-xs'} `}
                 >
                   {question.questionImage.match(/\.(mp4|webm|ogg)$/i) ? (
                     <video 
@@ -318,7 +317,7 @@ export function Player({ quiz, onExit }: PlayerProps) {
             </AnimatePresence>
 
             {/* Options */}
-            <div className={`w-full space-y-4 ${quiz.aspectRatio === '16:9' ? (question.questionImage ? 'w-1/2 max-w-xl' : 'max-w-3xl') : 'max-w-sm'}`}>
+            <div className={`w-full space-y-3 sm:space-y-4 ${quiz.aspectRatio === '16:9' ? (question.questionImage ? 'w-full md:w-1/2 max-w-xl' : 'w-full max-w-3xl') : 'max-w-sm'}`}>
               <AnimatePresence>
                 {(phase === "options" ||
                   phase === "timer" ||
@@ -355,11 +354,11 @@ export function Player({ quiz, onExit }: PlayerProps) {
                         }}
                         className={`w-full rounded-2xl p-1 shadow-2xl transition-all duration-500 ${scaleClass} ${opacityClass}`}
                       >
-                        <div className={`w-full h-full rounded-xl ${bgClass} p-4 flex items-center gap-4`}>
-                          <div className="w-12 h-12 shrink-0 bg-white/20 rounded-full flex items-center justify-center text-white font-black text-2xl shadow-inner border border-white/30">
+                        <div className={`w-full h-full rounded-xl ${bgClass} p-3 sm:p-4 flex items-center gap-3 sm:gap-4`}>
+                          <div className="w-10 h-10 sm:w-12 sm:h-auto sm:aspect-square shrink-0 bg-white/20 rounded-full flex items-center justify-center text-white font-black text-xl sm:text-2xl shadow-inner border border-white/30">
                             {OPTION_LABELS[idx]}
                           </div>
-                          <div className="flex-1 text-left text-white font-bold text-xl sm:text-2xl leading-tight drop-shadow-md">
+                          <div className="flex-1 text-left text-white font-bold text-lg sm:text-xl md:text-2xl leading-tight drop-shadow-md">
                             {opt}
                           </div>
                         </div>

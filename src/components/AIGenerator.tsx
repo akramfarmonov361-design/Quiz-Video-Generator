@@ -27,7 +27,7 @@ export function AIGenerator({
         </div>
         <h2 className="text-xl font-semibold text-indigo-100">{t('aiTitle', lang)}</h2>
       </div>
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <input
           type="text"
           value={aiTopic}

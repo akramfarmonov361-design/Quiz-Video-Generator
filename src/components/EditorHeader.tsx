@@ -64,7 +64,7 @@ export function EditorHeader({
         </div>
       </div>
 
-      <div className="flex justify-between items-end mb-8">
+      <div className="flex flex-col md:flex-row justify-between md:items-end gap-4 mb-8">
         <div className="flex-1">
           <input
             type="text"
@@ -74,8 +74,8 @@ export function EditorHeader({
             placeholder={t('titlePlaceholder', lang)}
           />
         </div>
-        <div className="flex gap-3">
-          <div className="flex bg-neutral-900 rounded-xl p-1 border border-neutral-800 mr-4">
+        <div className="flex flex-wrap gap-3">
+          <div className="flex bg-neutral-900 rounded-xl p-1 border border-neutral-800 md:mr-4 w-full md:w-auto">
             <button
               onClick={() => setQuiz({ ...quiz, aspectRatio: '9:16' })}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -102,7 +102,7 @@ export function EditorHeader({
           <button
             onClick={onExport}
             disabled={isExporting || isGeneratingAI}
-            className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition-colors shadow-lg relative overflow-hidden"
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-neutral-800 hover:bg-neutral-700 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition-colors shadow-lg relative overflow-hidden"
           >
             {isExporting ? (
               <>
@@ -120,7 +120,7 @@ export function EditorHeader({
           <button
             onClick={onPlay}
             disabled={isExporting || isGeneratingAI}
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-emerald-900/20"
+            className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white px-6 py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-emerald-900/20"
           >
             <Play size={20} fill="currentColor" />
             {t('preview', lang)}

@@ -188,7 +188,7 @@ export function Editor({ quiz, setQuiz, onPlay }: EditorProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 pb-24">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 pb-24">
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       {isExporting && (
         <ExportOverlay exportProgress={exportProgress} lang={lang} />
