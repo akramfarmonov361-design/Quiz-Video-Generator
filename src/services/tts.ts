@@ -32,8 +32,9 @@ export async function generateTTS(text: string, language: 'uz' | 'en' | 'ru' = '
       return base64Audio;
     }
     return null;
-  } catch (error) {
+  } catch (error: any) {
     console.error("TTS generation failed:", error);
+    alert("TTS API Error: " + (error?.message || String(error)));
     return null;
   }
 }
